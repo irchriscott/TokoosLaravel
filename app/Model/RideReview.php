@@ -11,7 +11,7 @@ class RideReview extends Model
     public function toJsonArray() {
         return [
             'id' => $this->id,
-            'amountPaid' => $this->amount_paid,
+            'amount_paid' => $this->amount_paid,
             'rate' => $this->rate,
             'comment' => $this->comments
         ];

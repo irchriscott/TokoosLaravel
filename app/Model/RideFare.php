@@ -12,7 +12,7 @@ class RideFare extends Model
         'distance', 
         'time', 
         'wait_per_minute', 
-        'deliveryFare',
+        'delivery_fare',
         'weight',
         'size',
         'value'
@@ -20,11 +20,11 @@ class RideFare extends Model
 
     public function toJsonArray() {
         return [
-            'baseFare' => $this->base_fare, 
+            'base_fare' => $this->base_fare, 
             'distance' => $this->distance, 
             'time' => $this->time, 
-            'waitPerMinute' => $this->wait_per_minute,
-            'deliveryFare' => $this->delivery_fare,
+            'wait_per_minute' => $this->wait_per_minute,
+            'delivery_fare' => $this->delivery_fare,
             'weight' => $this->weight,
             'size' => $this->size,
             'value' => $this->value

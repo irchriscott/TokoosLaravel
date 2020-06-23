@@ -12,41 +12,23 @@ use App\Traits\Util;
 
 class RiderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
     public function __construct() {
         $this->middleware('auth');
     }
 
-    public function index()
-    {
-        $riders = Rider::orderBy('created_at','DESC')->paginate(20);
+    public function index(Request $request) {
+        $riders = Rider::orderBy('created_at', 'DESC')->paginate(20);
         return view('admin.riders.index', compact('riders'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
+    
+    public function create(Request $request) {
         $ridetypes = RideType::orderBy('name','ASC')->get();
         return view('admin.riders.create', compact('ridetypes'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
+    
+    public function store(Request $request) {
+        
         $this->validate($request, [
             'full_name' => 'required',
             'email' => 'required',
@@ -64,19 +46,17 @@ class RiderController extends Controller
 
         $slug = str_slug($request->full_name);
 
-        if ($request->hasFile('image'))
-        {
+        if ($request->hasFile('image')) {
             $image = $request->file('image');
             $currentData = Carbon::now()->toDateString();
-            $imagename = $slug .'-'. $currentData .'-'. uniqid() .'.'. $image->getClientOriginalExtension();
-            if(!file_exists('uploads/ride_image'))
-            {
-                mkdir('uploads/ride_image', 0777 , true);
+            $imagename = $slug . '-' . $currentData . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+            
+            if(!file_exists('uploads/rider')) {
+                mkdir('uploads/rider', 0777 , true);
             }
-            $image->move('uploads/ride_image',$imagename);
-        } else {
-            $imagename = 'default.jpg';
-        }
+            $image->move('uploads/rider', $imagename);
+
+        } else { $imagename = 'default.jpg'; }
 
         $ride = new Rider();
         $ride->full_name = $request->full_name;
@@ -108,44 +88,23 @@ class RiderController extends Controller
         $ride->save();
 
         return redirect(route('riders.index'));
-
+    }
+    
+    public function show(Request $request, $id) {
+        
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
+    public function edit(Request $request, $id) {
         $ride = Rider::find($id);
         $vehicle = Vehicle::where('rider_id', $id)->first();
-        $ridetypes = RideType::orderBy('name','ASC')->get();
-        $riders = Rider::orderBy('full_name','ASC')->get();
-        return view('admin.riders.edit', compact('ride','vehicle','ridetypes','riders'));
+        $ridetypes = RideType::orderBy('name', 'ASC')->get();
+        $riders = Rider::orderBy('full_name', 'ASC')->get();
+        
+        return view('admin.riders.edit', compact('ride', 'vehicle', 'ridetypes', 'riders'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
+        
         $this->validate($request, [
             'full_name' => 'required',
             'email' => 'required',
@@ -161,24 +120,21 @@ class RiderController extends Controller
             'max_people' => 'required'
         ]);
 
-
         $slug = str_slug($request->full_name);
 
         $slider = Rider::find($id);
 
-        if ($request->hasFile('image'))
-        {
+        if ($request->hasFile('image')) {
             $image = $request->file('image');
             $currentData = Carbon::now()->toDateString();
-            $imagename = $slug .'-'. $currentData .'-'. uniqid() .'.'. $image->getClientOriginalExtension();
-            if(!file_exists('uploads/ride_image'))
-            {
-                mkdir('uploads/ride_image', 0777 , true);
+            $imagename = $slug . '-' . $currentData . '-'. uniqid() . '.' . $image->getClientOriginalExtension();
+            
+            if(!file_exists('uploads/riders')) {
+                mkdir('uploads/rides', 0777 , true);
             }
-            $image->move('uploads/ride_image', $imagename);
-        } else {
-            $imagename = $slider->image;
-        }
+            $image->move('uploads/riders', $imagename);
+
+        } else { $imagename = $slider->image; }
 
         $ride = Rider::find($id);
         $ride->full_name = $request->full_name;
@@ -191,7 +147,7 @@ class RiderController extends Controller
         $ride->save();
 
         //Vehicle data
-        $vehicle = Vehicle::where("rider_id", $ride->id)->first();
+        $vehicle = Vehicle::where('rider_id', $ride->id)->first();
         $vehicle->ride_type_id = $request->ride_type_id;
         $vehicle->rider_id = $ride->id;
         $vehicle->brand = $request->brand;
@@ -205,17 +161,11 @@ class RiderController extends Controller
 
         return redirect(route('riders.index'));
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    
+    public function destroy(Request $request, $id)
     {
-        //Rider::where('id',$id)->delete();
-        //Vehicle::where('id',$id)->delete();
+        //Rider::where('id', $id)->delete();
+        //Vehicle::where('id', $id)->delete();
         return redirect()->back();
     }
 }

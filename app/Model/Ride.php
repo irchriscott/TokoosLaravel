@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Model\Location;
 use Illuminate\Database\Eloquent\Model;
 
 class Ride extends Model
@@ -10,6 +11,7 @@ class Ride extends Model
         'rider_id',
         'user_id',
         'type',
+        'code',
         'origine',
         'destination',
         'package_id',
@@ -39,11 +41,11 @@ class Ride extends Model
     }
 
     public function from() {
-        return $this->hasOne('App\Model\Location', 'origine', 'id');
+        return Location::find($this->origin);
     }
 
     public function to() {
-        return $this->hasOne('App\Model\Location', 'destination', 'id');
+        return Location::find($this->destination);
     }
 
     public function review() {
@@ -60,8 +62,8 @@ class Ride extends Model
             'rider' => $this->rider->toJsonArray(),
             'user' => $this->user->toJsonArray(),
             'type' => $this->type,
-            'origin' => $this->from->toJsonArray(),
-            'destination' => $this->to->toJsonArray(),
+            'origin' => $this->from(),
+            'destination' => $this->to(),
             'packageRide' => $this->package_id != NULL ? $this->package->toJsonArray() : NULL,
             'status' => $this->status,
             'priceRange' => $this->price_range,
@@ -72,7 +74,7 @@ class Ride extends Model
             'duration' => $this->duration,
             'timeDeparture' => $this->time_departure,
             'timeArrive' => $this->time_arrive,
-            'review' => $this->review->toJsonArray(),
+            'review' => $this->review,
             'createdAt' => $this->created_at->toDateTimeString(),
             'updatedAt' => $this->updated_at->toDateTimeString()
         ];

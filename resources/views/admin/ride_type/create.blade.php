@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                             @include('includes.messages')
-                            <form action="{{ route('ride_type.store') }}" method="POST">
+                            <form action="{{ route('type.store') }}" method="POST">
                                 {{ csrf_field() }}
                                 <div class="row">
                                     <div class="col-md-6">
@@ -83,7 +83,7 @@
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-default btn-lg m-b-10 bg-warning border-none m-r-5 sbmt-btn" >Apply</button>
-                                <a class="btn btn-default btn-lg m-b-10 m-l-5 sbmt-btn" href="{{ route('ride_type.index') }}">Cancel</a>
+                                <a class="btn btn-default btn-lg m-b-10 m-l-5 sbmt-btn" href="{{ route('type.index') }}">Cancel</a>
                             </form>
                         </div>
                     </div>

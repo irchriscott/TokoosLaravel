@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                             @include('includes.messages')
-                            <form method="post" action="{{ route('ride_type.update', $ridetype->id) }}">
+                            <form method="post" action="{{ route('type.update', $ridetype->id) }}">
                                 {{ csrf_field() }}
                                 {{ method_field('PATCH') }}
                             <div class="row">
@@ -150,7 +150,7 @@
                                 </div>
                             </div>
                             <button class="btn btn-default btn-lg m-b-10 bg-warning border-none m-r-5 sbmt-btn" type="submit">Save</button>
-                            <a class="btn btn-default btn-lg m-b-10 m-l-5 sbmt-btn" href="{{ route('ride_type.index') }}">Cancel</a>
+                            <a class="btn btn-default btn-lg m-b-10 m-l-5 sbmt-btn" href="{{ route('type.index') }}">Cancel</a>
                         </form>
                         </div>
                     </div>

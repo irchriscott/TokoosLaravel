@@ -20,6 +20,8 @@ class Rider extends Model
         'is_available'
     ];
 
+    protected $append = ['rate'];
+
     public function vehicle() {
         return $this->hasOne('App\Model\Vehicle');
     }
@@ -28,7 +30,7 @@ class Rider extends Model
         return $this->hasMany('App\Model\Ride');
     }
 
-    public function rate() {
+    public function getRateAttribute() {
         $total = 0;
         $count = 0;
         foreach($this->rides as $ride) {
@@ -38,25 +40,25 @@ class Rider extends Model
             }
         }
 
-        return $total != 0 && $count != 0 ? 0 : $total / $count;
+        return $total != 0 && $count != 0 ? $total / $count : 0;
     }
 
     public function toJsonArray() {
         return [
             'id' => $this->id,
-            'fullName' => $this->full_name,
+            'full_name' => $this->full_name,
             'email' => $this->email,
-            'phoneNumber' => $this->phone_number,
+            'phone_number' => $this->phone_number,
             'image' => $this->image,
             'country' => $this->country,
             'city' => $this->city,
-            'rideNumber' => $this->ride_number,
+            'ride_number' => $this->ride_number,
             'token' => $this->token,
             'channel' => $this->channel,
             'vehicle' => $this->vehicle->toJsonArray(),
-            'rate' => $this->rate(),
-            'isAvailable' => $this->is_available,
-            'isAuthenticated' => $this->is_authenticated,
+            'rate' => $this->rate,
+            'is_available' => $this->is_available,
+            'is_authenticated' => $this->is_authenticated,
         ];
     }
 }

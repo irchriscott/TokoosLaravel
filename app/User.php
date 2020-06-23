@@ -9,13 +9,17 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'name', 'email', 'password', 'phone_number', 'country', 'city', 'token', 'channel', 'is_authenticated'
+        'name', 
+        'email', 
+        'password', 
+        'country_code',
+        'phone_number', 
+        'country', 
+        'city', 
+        'token', 
+        'channel', 
+        'is_authenticated'
     ];
 
     public function toJsonArray() {
@@ -23,20 +27,17 @@ class User extends Authenticatable
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'phoneNumber' => $this->phone_number,
+            'country_code' => $this->country_code,
+            'phone_number' => $this->phone_number,
             'country' => $this->country,
             'city' => $this->city,
+            'image' => $this->image,
             'token' => $this->token,
             'channel' => $this->channel,
-            'isAuthenticated' => $this->is_authenticated
+            'is_authenticated' => $this->is_authenticated
         ];
     }
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password', 'remember_token',
     ];

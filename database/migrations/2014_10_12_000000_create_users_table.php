@@ -18,9 +18,11 @@ class CreateUsersTable extends Migration
             $table->string('name')->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('password')->nullable();
+            $table->string('country_code')->default('cd');
             $table->string('phone_number')->nullable();
             $table->string('country')->nullable();
             $table->string('city')->nullable();
+            $table->string('image')->default('default.jpg');
             $table->text('token');
             $table->string('channel');
             $table->boolean('is_authenticated')->default(false);

@@ -21,16 +21,16 @@ class RideController extends Controller
     public function requestRiders(Request $request) {
 
         $validator = Validator::make($request->all(), [
-            "city" => "required",
-            "type" => "required"
+            'city' => 'required',
+            'type' => 'required'
         ]);
 
         if($validator->fails()){
             return response()->json([
-                "type" => "error",
-                "message" => "Erreur de validation",
-                "status" => 406,
-                "args" => $validator->errors()->all()
+                'type' => 'error',
+                'message' => 'Erreur de validation',
+                'status' => 406,
+                'args' => $validator->errors()->all()
             ], 406);
         }
 
@@ -41,11 +41,12 @@ class RideController extends Controller
                     && $value->rider->is_blocked == false;
         });
 
-        $riders = Rider::where('city', $request->input('city'))
-                        ->where('is_blocked', false)
-                        ->where('is_available', true)->get()->filter(function($value, $key) use ($request) {
-                            return $value->vehicle->type->id == $request->input('type');
-                        })->all();
+        // $riders = Rider::where('city', $request->input('city'))
+        //                 ->where('is_blocked', false)
+        //                 ->where('is_available', true)->get()->filter(function($value, $key) use ($request) {
+        //                     return $value->vehicle->type->id == $request->input('type');
+        //                 })->all();
+        $riders = Rider::all();
         
         $ridersJson = [];
         foreach($riders as $rider) { $ridersJson[] = $rider->toJsonArray(); }
@@ -55,15 +56,15 @@ class RideController extends Controller
 
     public function initiateRide(Request $request) {
 
-        $auth = $request->input("auth") != NULL ? $request->input("auth") : $request->header("Authorization");
-        $user = User::where("token", $auth)->first();
+        $auth = $request->input('auth') != NULL ? $request->input('auth') : $request->header('Authorization');
+        $user = User::where('token', $auth)->first();
 
         if(is_null($user)) {
             return response()->json([
-                "type" => "error",
-                "message" => "Erreur d'Autentication",
-                "status" => 406,
-                "args" => []
+                'type' => 'error',
+                'message' => 'Erreur d\'Autentication',
+                'status' => 406,
+                'args' => []
             ], 406);
         }
 
@@ -83,10 +84,10 @@ class RideController extends Controller
 
         if($validator->fails()){
             return response()->json([
-                "type" => "error",
-                "message" => "Erreur de validation",
-                "status" => 406,
-                "args" => $validator->errors()->all()
+                'type' => 'error',
+                'message' => 'Erreur de validation',
+                'status' => 406,
+                'args' => $validator->errors()->all()
             ], 406);
         }
 

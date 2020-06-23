@@ -32,11 +32,11 @@ class Vehicle extends Model
             'type' => $this->type->toJsonArray(),
             'brand' => $this->brand,
             'name' => $this->name,
-            'plateNumber' => $this->number_plate,
-            'productionYear' => $this->production_year,
+            'number_plate' => $this->number_plate,
+            'production_year' => $this->production_year,
             'mileage' => $this->mileage,
             'power' => $this->power,
-            'maxPeople' => $this->max_people
+            'max_people' => $this->max_people
         ];
     }
 }

@@ -70,7 +70,7 @@
                                                     <td>{{ $rider->email }}</td>
                                                     <td>{{ $rider->phone_number }}</td>
                                                     <td>{{ $rider->city }}, {{ $rider->country }}</td>
-                                                    <td><img src="{{ asset('uploads/ride_image/' . $rider->image) }}" width="50" /></td>
+                                                    <td><img src="{{ asset('uploads/riders/' . $rider->image) }}" width="50" /></td>
                                                     <td><a href="{{ route('riders.edit', $rider->id) }}"><span style="font-size: 15px" class="glyphicon glyphicon-edit"></span> </a></td>
                                                 </tr>
                                             @endforeach

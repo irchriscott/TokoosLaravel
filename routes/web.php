@@ -17,14 +17,14 @@ Route::get('/', function () {
 
 Auth::routes();
 
-//Admin Route
+//ADMIN ROUTES
 
 Route::group(['namespace' => 'Admin'], function (){
     Route::prefix('admin')->group(function(){
-        Route::get('/login','AdminController@admin_login')->name('admin.login');
+        Route::get('/login','AdminController@adminLogin')->name('admin.login');
         Route::get('/index','AdminController@index')->name('admin.index')->middleware('auth');
         Route::resource('/riders','RiderController');
-        Route::resource('/ride_type','RideTypeController');
+        Route::resource('/ride/type','RideTypeController');
     });
 });
 

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Cache;
+use Illuminate\Cache\NullStore;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -14,8 +16,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
         Schema::defaultStringLength(191);
+        Cache::extend('none', function ($app) {
+            return Cache::repository(new NullStore);
+        });
     }
 
     /**

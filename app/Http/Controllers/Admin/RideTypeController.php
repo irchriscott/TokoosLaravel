@@ -9,40 +9,21 @@ use App\Model\RideFare;
 
 class RideTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
     public function __construct() {
         $this->middleware('auth');
     }
 
-    public function index()
-    {
-        $ridetypes = RideType::orderBy('created_at','DESC')->paginate(20);
+    public function index(Request $request) {
+        $ridetypes = RideType::orderBy('created_at', 'DESC')->paginate(20);
         return view('admin.ride_type.index', compact('ridetypes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
+    public function create(Request $request) {
         return view('admin.ride_type.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $this->validate($request, [
             'name' => 'required',
             'size' => 'required'
@@ -58,38 +39,16 @@ class RideTypeController extends Controller
         return redirect(route('ride_type.index'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+    public function show(Request $request, $id) {
+        
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
+    public function edit(Request $request, $id) {
         $ridetype = RideType::where('id',$id)->first();
         return view('admin.ride_type.edit', compact('ridetype'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         $this->validate($request, [
             'name' => 'required',
             'size' => 'required',
@@ -122,15 +81,8 @@ class RideTypeController extends Controller
         return redirect(route('ride_type.index'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        RideType::where('id',$id)->delete();
+    public function destroy(Request $request, $id) {
+        //RideType::where('id', $id)->delete();
         return redirect()->back();
     }
 }
