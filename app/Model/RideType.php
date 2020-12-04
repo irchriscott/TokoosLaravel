@@ -8,6 +8,10 @@ class RideType extends Model
 {
     protected $fillable = ['name', 'size'];
 
+    protected $with = ['fare'];
+
+    protected $hidden = ['created_at', 'updated_at'];
+
     public function vehicles()
     {
         return $this->hasMany('App\Model\Vehicle');
@@ -15,20 +19,5 @@ class RideType extends Model
 
     public function fare(){
         return $this->hasOne('App\Model\RideFare');
-    }
-
-    static function allToJson() {
-        $all = [];
-        foreach(self::all() as $rideType) { $all[] = $rideType->toJsonArray(); }
-        return $all;
-    }
-
-    public function toJsonArray() {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'size' => $this->size,
-            'fare' => $this->fare->toJsonArray()
-        ];
     }
 }

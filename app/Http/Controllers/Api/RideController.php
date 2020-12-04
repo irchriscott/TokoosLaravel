@@ -6,6 +6,7 @@ use App\User;
 use App\Model\Ride;
 use App\Model\Rider;
 use App\Traits\Util;
+use App\Model\Vehicle;
 use App\Model\Location;
 use App\Model\RideType;
 use Illuminate\Http\Request;
@@ -15,10 +16,22 @@ use Illuminate\Support\Facades\Validator;
 class RideController extends Controller
 {
     public function requestRideFares(Request $request) {
-        return response()->json(RideType::allToJson());
+        return response()->json(RideType::all());
     }
 
     public function requestRiders(Request $request) {
+
+        $auth = $request->input('auth') != NULL ? $request->input('auth') : $request->header('Authorization');
+        $user = User::where('token', $auth)->first();
+
+        if(is_null($user)) {
+            return response()->json([
+                'type' => 'error',
+                'message' => 'Erreur d\'Autentication',
+                'status' => 406,
+                'args' => []
+            ], 406);
+        }
 
         $validator = Validator::make($request->all(), [
             'city' => 'required',
@@ -34,24 +47,23 @@ class RideController extends Controller
             ], 406);
         }
 
+        $city = $request->input('city');
         $type = RideType::find($request->input('type'));
-        $vehicles = collect($type->vehicles)->filter(function($value, $key) use ($request) { 
-            return  $value->rider->city == $request->input('city') 
-                    && $value->rider->is_available == true 
-                    && $value->rider->is_blocked == false;
-        });
 
-        // $riders = Rider::where('city', $request->input('city'))
-        //                 ->where('is_blocked', false)
-        //                 ->where('is_available', true)->get()->filter(function($value, $key) use ($request) {
-        //                     return $value->vehicle->type->id == $request->input('type');
-        //                 })->all();
-        $riders = Rider::all();
-        
-        $ridersJson = [];
-        foreach($riders as $rider) { $ridersJson[] = $rider->toJsonArray(); }
+        $vehicles = Vehicle::whereHas('rider', function($query) use ($city) {
+            $query->where('is_available', true)
+                    ->where('is_blocked', false)
+                    ->where('city', $city);
+        })->where('ride_type_id', $type->id)->get();
 
-        return response()->json($ridersJson, 200);
+        $riders = Rider::whereHas('vehicle', function($query) use ($type) {
+                            $query->where('ride_type_id', $type->id);
+                        })->where('city', $request->input('city'))
+                            ->where('is_blocked', false)
+                            ->where('is_available', true)->get();
+
+
+        return response()->json($riders, 200);
     }
 
     public function initiateRide(Request $request) {
@@ -118,6 +130,6 @@ class RideController extends Controller
             'duration' => $request->input('duration')
         ]);
 
-        return response()->json($ride->toJsonArray(), 200);
+        return response()->json($ride, 200);
     }
 }

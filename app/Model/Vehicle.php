@@ -18,25 +18,13 @@ class Vehicle extends Model
         'max_people'
     ];
 
+    protected $with = ['rider', 'type'];
+
     public function rider() {
         return $this->belongsTo('App\Model\Rider', 'rider_id', 'id');
     }
 
     public function type() {
         return $this->belongsTo('App\Model\RideType', 'ride_type_id', 'id');
-    }
-
-    public function toJsonArray() {
-        return [
-            'id' => $this->id,
-            'type' => $this->type->toJsonArray(),
-            'brand' => $this->brand,
-            'name' => $this->name,
-            'number_plate' => $this->number_plate,
-            'production_year' => $this->production_year,
-            'mileage' => $this->mileage,
-            'power' => $this->power,
-            'max_people' => $this->max_people
-        ];
     }
 }

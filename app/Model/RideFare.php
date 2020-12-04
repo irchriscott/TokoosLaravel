@@ -18,16 +18,5 @@ class RideFare extends Model
         'value'
     ];
 
-    public function toJsonArray() {
-        return [
-            'base_fare' => $this->base_fare, 
-            'distance' => $this->distance, 
-            'time' => $this->time, 
-            'wait_per_minute' => $this->wait_per_minute,
-            'delivery_fare' => $this->delivery_fare,
-            'weight' => $this->weight,
-            'size' => $this->size,
-            'value' => $this->value
-        ];
-    }
+    protected $hidden = ['created_at', 'updated_at', 'ride_type_id'];
 }

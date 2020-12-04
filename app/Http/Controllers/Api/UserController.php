@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\User;
 use App\Traits\Util;
 use App\Model\Rider;
+use Twilio\Rest\Client;
 use Illuminate\Http\Request;
 use App\Model\AuthenticationCode;
 use App\Http\Controllers\Controller;
-use DexBarrett\ClockworkSms\ClockworkSms;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -31,14 +31,15 @@ class UserController extends Controller
         $phoneNumber = $request->input('phone');
 
         $user = User::updateOrCreate(
-        [
-            'country_code' => strtolower($request->input('code')),
-            'phone_number' => $phoneNumber,
-        ],
-        [
-            'channel' => Util::generateRandomString(64),
-            'token' => Util::generateRandomString(256)
-        ]);
+            [
+                'country_code' => strtolower($request->input('code')),
+                'phone_number' => $phoneNumber,
+            ],
+            [
+                'channel' => Util::generateRandomString(64),
+                'token' => Util::generateRandomString(256)
+            ]
+        );
 
         $authCode = rand(1000, 9999);
         $expiryDate = time() + (24 * 60 * 60);
@@ -53,13 +54,16 @@ class UserController extends Controller
             'is_authenticated' => false
         ]);
 
+        $client = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+        
         try {
-            $options = array( 'ssl' => false );
-            $clockworkSms = new ClockworkSms('a4f59f119d97927ca9a2592eab533269fc8db7ee', $options);
-            //$clockworkSms->send(['to' => $phoneNumber, 'message' => 'Votre code d'activation pour TolekaRide Ride est ' . $authCode ]);
-        } catch (Exception $e) {}
+            $client->messages->create($phoneNumber, [
+                'from' => env('TWILIO_PHONE'),
+                'body' => 'Votre code d\'activation pour TolekaRide Ride est ' . $authCode 
+            ]);
+        } catch(\Exception $ex) {}
 
-        return response()->json($user->toJsonArray(), 200);
+        return response()->json($user, 200);
     }
 
     public function authenticatePhoneNumber(Request $request) {
@@ -94,7 +98,7 @@ class UserController extends Controller
         $authCode->is_authenticated = true;
         $authCode->save();
 
-        return response()->json($user->toJsonArray(), 200);
+        return response()->json($user, 200);
     }
 
     public function saveUserIdentity(Request $request) {
@@ -140,7 +144,7 @@ class UserController extends Controller
         $user->is_authenticated = true;
         $user->save();
 
-        return response()->json($user->toJsonArray(), 200);
+        return response()->json($user, 200);
     }
 
     public function authenticateRider(Request $request) {
@@ -167,6 +171,6 @@ class UserController extends Controller
             ], 406);
         }
 
-        return response()->json($rider->toJsonArray(), 200);
+        return response()->json($rider, 200);
     }
 }

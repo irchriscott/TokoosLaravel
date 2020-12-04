@@ -8,17 +8,9 @@ class Package extends Model
 {
     protected $fillable = ['name', 'weight', 'description'];
 
+    protected $with = ['recipients'];
+
     public function recipients() {
         return $this->hasMany('App\Model\Recipient');
-    }
-
-    public function toJsonArray() {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'weight' => $this->weight,
-            'description' => $this->description,
-            'recipients' => $this->recipients->toArray()
-        ];
     }
 }

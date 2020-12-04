@@ -28,6 +28,10 @@ class Ride extends Model
         'time_arrive'
     ];
 
+    protected $with = ['user', 'rider', 'package'];
+
+    protected $appends = ['from', 'to'];
+
     public function rider() {
         return $this->belongsTo('App\Model\Rider');
     }
@@ -40,43 +44,15 @@ class Ride extends Model
         return $this->hasOne('App\Model\Package');
     }
 
-    public function from() {
+    public function getFromAttribute() {
         return Location::find($this->origin);
     }
 
-    public function to() {
+    public function getToAttribute() {
         return Location::find($this->destination);
     }
 
     public function review() {
         return $this->hasOne('App\Model\RideReview');
-    }
-
-    public function type() {
-
-    }
-
-    public function toJsonArray() {
-        return [
-            'id' => $this->id,
-            'rider' => $this->rider->toJsonArray(),
-            'user' => $this->user->toJsonArray(),
-            'type' => $this->type,
-            'origin' => $this->from(),
-            'destination' => $this->to(),
-            'packageRide' => $this->package_id != NULL ? $this->package->toJsonArray() : NULL,
-            'status' => $this->status,
-            'priceRange' => $this->price_range,
-            'currency' => $this->currency,
-            'numberOfPeople' => $this->number_of_people,
-            'amountPaid' => $this->amount_paid,
-            'distance' => $this->distance,
-            'duration' => $this->duration,
-            'timeDeparture' => $this->time_departure,
-            'timeArrive' => $this->time_arrive,
-            'review' => $this->review,
-            'createdAt' => $this->created_at->toDateTimeString(),
-            'updatedAt' => $this->updated_at->toDateTimeString()
-        ];
     }
 }
