@@ -22,7 +22,7 @@ class CreateAdminsTable extends Migration
             $table->string('country');
             $table->string('city');
             $table->string('image')->default('default.jpg');
-            $table->string('remember_token');
+            $table->string('remember_token')->nullable();
             $table->timestamps();
         });
     }

@@ -23,8 +23,16 @@ Route::group(['namespace' => 'Admin'], function (){
     Route::prefix('admin')->group(function(){
         Route::get('/login','AdminController@adminLogin')->name('admin.login');
         Route::get('/index','AdminController@index')->name('admin.index')->middleware('auth');
-        Route::resource('/riders','RiderController');
-        Route::resource('/ride/type','RideTypeController');
+        Route::resource('/riders','RiderController')->middleware('auth');
+        Route::resource('/ride/type','RideTypeController')->names([
+            'index' => 'ride_type.index',
+            'create' => 'ride_type.create',
+            'store' => 'ride_type.store',
+            'show' => 'ride_type.show',
+            'edit' => 'ride_type.edit',
+            'update' => 'ride_type.update',
+            'destroy' => 'ride_type.destroy'
+        ])->middleware('auth');
     });
 });
 
