@@ -138,7 +138,7 @@
                                     <div class="basic-form">
                                         <div class="form-group">
                                             <label>Size</label>
-                                            <input type="number" name="size" class="form-control border-none input-flat bg-ash" value="{{ $ridetype->fare->size }}">
+                                            <input type="number" name="size_package" class="form-control border-none input-flat bg-ash" value="{{ $ridetype->fare->size }}">
                                         </div>
                                     </div>
                                     <div class="basic-form">

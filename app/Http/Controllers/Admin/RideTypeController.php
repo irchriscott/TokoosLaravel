@@ -74,7 +74,7 @@ class RideTypeController extends Controller
         $rideFare->wait_per_minute = $request->wait_per_minute;
         $rideFare->delivery_fare = $request->delivery_fare;
         $rideFare->weight = $request->weight;
-        $rideFare->size = $request->size;
+        $rideFare->size = $request->size_package;
         $rideFare->value = $request->value;
         $rideFare->save();
 
