@@ -52,9 +52,9 @@ class RiderController extends Controller
             $imagename = $slug . '-' . $currentData . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
             
             if(!file_exists('uploads/rider')) {
-                mkdir('uploads/rider', 0777 , true);
+                mkdir('uploads/riders', 0777 , true);
             }
-            $image->move('uploads/rider', $imagename);
+            $image->move('uploads/riders', $imagename);
 
         } else { $imagename = 'default.jpg'; }
 
