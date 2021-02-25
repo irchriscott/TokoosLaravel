@@ -23,20 +23,11 @@ class AdminSeed extends Seeder
         ]);
 
         Admin::create([
-            'full_name' => 'Josué Mankunku',
-            'email' => 'josuemank@gmail.com',
-            'phone_number' => '0788776528',
-            'country' => 'DR Congo',
-            'city' => 'Goma',
-            'password' => bcrypt('josue1303'),
-        ]);
-
-        Admin::create([
             'full_name' => 'Christian Scott',
             'email' => 'irchristianscott@gmail.com',
             'phone_number' => '0756891594',
-            'country' => 'DR Congo',
-            'city' => 'Goma',
+            'country' => 'Uganda',
+            'city' => 'Kampala',
             'password' => bcrypt('chriscons'),
         ]);
 
