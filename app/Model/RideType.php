@@ -12,12 +12,16 @@ class RideType extends Model
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    public function vehicles()
+    protected $appends = ['icon'];
+
+    public function fare()
     {
-        return $this->hasMany('App\Model\Vehicle');
+        return $this->hasOne('App\Model\RideFare');
     }
 
-    public function fare(){
-        return $this->hasOne('App\Model\RideFare');
+    public function getIconAttribute() 
+    {
+        $rides = ['boda.png', 'x.png', 'xl.png'];
+        return '/uploads/rides/' . $rides[$this->id - 1];
     }
 }

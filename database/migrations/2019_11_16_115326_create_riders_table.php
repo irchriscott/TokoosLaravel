@@ -23,6 +23,7 @@ class CreateRidersTable extends Migration
             $table->string('country');
             $table->string('city');
             $table->string('ride_number');
+            $table->string('auth_code')->nullable();
             $table->text('token');
             $table->string('channel');
             $table->boolean('is_available')->default(true);

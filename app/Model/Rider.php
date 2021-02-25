@@ -15,6 +15,7 @@ class Rider extends Model
         'country',
         'city',
         'ride_number',
+        'auth_code',
         'token',
         'channel',
         'is_available'
@@ -23,6 +24,8 @@ class Rider extends Model
     protected $appends = ['rate'];
 
     protected $with = ['vehicle'];
+
+    protected $hidden = ['auth_code', 'rides'];
 
     public function vehicle() {
         return $this->hasOne('App\Model\Vehicle');

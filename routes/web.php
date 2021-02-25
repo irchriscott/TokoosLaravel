@@ -35,7 +35,9 @@ Route::group(['namespace' => 'Api'], function (){
         Route::post('/user/register/phone-number', 'UserController@registerPhoneNumber');
         Route::post('/user/register/identity', 'UserController@saveUserIdentity');
         Route::post('/user/auth/phone-number', 'UserController@authenticatePhoneNumber');
-        Route::post('/rider/auth', 'UserController@authenticateRider');
+        
+        Route::post('/rider/auth/phone', 'RiderController@authPhone');
+        Route::post('/rider/auth/code', 'RiderController@authCode');
 
         Route::get('/ride/request/fares', 'RideController@requestRideFares');
         Route::post('/ride/request/riders', 'RideController@requestRiders');

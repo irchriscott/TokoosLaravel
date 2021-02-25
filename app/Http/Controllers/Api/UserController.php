@@ -59,7 +59,7 @@ class UserController extends Controller
         try {
             $client->messages->create($phoneNumber, [
                 'from' => env('TWILIO_PHONE'),
-                'body' => 'Votre code d\'activation pour TolekaRide Ride est ' . $authCode 
+                'body' => 'Votre code d\'activation pour Toleka Ride est ' . $authCode 
             ]);
         } catch(\Exception $ex) {}
 

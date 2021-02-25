@@ -32,7 +32,7 @@ class CreateRidesTable extends Migration
             $table->double('distance')->default(0);
             $table->integer('duration')->default(0);
             $table->string('time_departure')->nullable();
-            $table->string('time_arrive')->nullable();
+            $table->string('time_arrival')->nullable();
             $table->timestamps();
         });
     }

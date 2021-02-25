@@ -18,11 +18,7 @@ class Vehicle extends Model
         'max_people'
     ];
 
-    protected $with = ['rider', 'type'];
-
-    public function rider() {
-        return $this->belongsTo('App\Model\Rider', 'rider_id', 'id');
-    }
+    protected $with = ['type'];
 
     public function type() {
         return $this->belongsTo('App\Model\RideType', 'ride_type_id', 'id');

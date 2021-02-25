@@ -25,7 +25,7 @@ class Ride extends Model
         'distance',
         'duration',
         'time_departure',
-        'time_arrive'
+        'time_arrival'
     ];
 
     protected $with = ['user', 'rider', 'package'];

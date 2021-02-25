@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 class RideController extends Controller
 {
     public function requestRideFares(Request $request) {
-        return response()->json(RideType::all());
+        return response()->json(RideType::orderBy('id', 'ASC')->get());
     }
 
     public function requestRiders(Request $request) {
