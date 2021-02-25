@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                             @include('includes.messages')
-                            <form action="{{ route('type.store') }}" method="POST">
+                            <form action="{{ route('ride_type.store') }}" method="POST">
                                 {{ csrf_field() }}
                                 <div class="row">
                                     <div class="col-md-6">

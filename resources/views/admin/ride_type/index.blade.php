@@ -45,7 +45,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <a class="btn btn-default btn-lg m-b-10 bg-warning border-none m-r-5 sbmt-btn" href="{{ route('type.create') }}">Add New Ride Type</a>
+                            <a class="btn btn-default btn-lg m-b-10 bg-warning border-none m-r-5 sbmt-btn" href="{{ route('ride_type.create') }}">Add New Ride Type</a>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table student-data-table m-t-20">
@@ -65,10 +65,10 @@
                                                 <td>{{ $type->name }}</td>
                                                 <td>{{ $type->size }}</td>
                                                 <td>
-                                                    <a href="{{ route('type.edit', $type->id) }}"><span style="font-size: 15px" class="glyphicon glyphicon-edit"></span> Edit </a>
+                                                    <a href="{{ route('ride_type.edit', $type->id) }}"><span style="font-size: 15px" class="glyphicon glyphicon-edit"></span> Edit </a>
                                                 </td>
                                                 <td>
-                                                    <form id="delete-form-{{ $type->id }}" method="post" action="{{ route('type.destroy',$type->id) }}"
+                                                    <form id="delete-form-{{ $type->id }}" method="post" action="{{ route('ride_type.destroy',$type->id) }}"
                                                           style="display: none">
                                                         {{ csrf_field() }}
                                                         {{ method_field('DELETE') }}

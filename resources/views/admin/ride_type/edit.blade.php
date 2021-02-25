@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                             @include('includes.messages')
-                            <form method="post" action="{{ route('type.update', $ridetype->id) }}">
+                            <form method="post" action="{{ route('ride_type.update', $ridetype->id) }}">
                                 {{ csrf_field() }}
                                 {{ method_field('PATCH') }}
                             <div class="row">
