@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\User;
+use PubNub\PubNub;
 use App\Model\Ride;
 use App\Model\Rider;
 use App\Traits\Util;
 use App\Model\Vehicle;
 use App\Model\Location;
 use App\Model\RideType;
+use PubNub\PNConfiguration;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use PubNub\Exceptions\PubNubException;
 use Illuminate\Support\Facades\Validator;
 
 class RideController extends Controller
@@ -50,20 +53,46 @@ class RideController extends Controller
         $city = $request->input('city');
         $type = RideType::find($request->input('type'));
 
-        // $vehicles = Vehicle::whereHas('rider', function($query) use ($city) {
-        //     $query->where('is_available', true)
-        //             ->where('is_blocked', false)
-        //             ->where('city', $city);
-        // })->where('ride_type_id', $type->id)->get();
+        $vehicles = Vehicle::whereHas('rider', function($query) use ($city) {
+            $query->where('is_available', true)
+                    ->where('is_blocked', false)
+                    ->where('city', $city);
+        })->where('ride_type_id', $type->id)->get();
 
         $riders = Rider::whereHas('vehicle', function($query) use ($type) {
                             $query->where('ride_type_id', $type->id);
                         })->where('city', $request->input('city'))
                             ->where('is_blocked', false)
                             ->where('is_available', true)->get();
+        
+        $pnconf = new PNConfiguration();
+        $pubnub = new PubNub($pnconf);
+                            
+        $pnconf->setSubscribeKey(env('PUBNUB_SUBSCRIBE_KEY'));
+        $pnconf->setPublishKey(env('PUBNUB_PUBLISH_KEY'));
+        $pnconf->setUuid(Util::generateRandomString(24));
 
+        $message = [
+            'type' => 'REQUEST_RIDER_AVAILABILITY',
+            'user' => [
+                'name' => $user->name,
+                'phone' => $user->phone_number,
+                'channel' => $user->channel
+            ],
+            'data' => []
+        ];
 
-        return response()->json($riders, 200);
+        foreach($riders as $rider) {
+            try {
+                $pubnub->publish()
+                    ->channel($rider->channel)                      
+                    ->message($message)
+                    ->usePost(true)
+                    ->sync();
+            } catch(PubNubException $ex) {}
+        }
+
+        return response()->json(count($riders), 200);
     }
 
     public function initiateRide(Request $request) {
