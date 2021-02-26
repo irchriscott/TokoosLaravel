@@ -77,7 +77,7 @@ class RiderController extends Controller
         if(is_null($rider)) {
             return response()->json([
                 'type' => 'error',
-                'message' => 'Erreur d\'Autentication',
+                'message' => 'Erreur d\'authentification',
                 'status' => 406,
                 'args' => []
             ], 406);

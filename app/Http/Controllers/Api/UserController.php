@@ -74,7 +74,7 @@ class UserController extends Controller
         if(is_null($user)) {
             return response()->json([
                 'type' => 'error',
-                'message' => 'Erreur d\'Autentication',
+                'message' => 'Erreur d\'authentification',
                 'status' => 406,
                 'args' => []
             ], 406);
@@ -109,7 +109,7 @@ class UserController extends Controller
         if(is_null($user)) {
             return response()->json([
                 'type' => 'error',
-                'message' => 'Erreur d\'Autentication',
+                'message' => 'Erreur d\'authentification',
                 'status' => 406,
                 'args' => []
             ], 406);

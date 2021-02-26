@@ -27,7 +27,7 @@ class RideController extends Controller
         if(is_null($user)) {
             return response()->json([
                 'type' => 'error',
-                'message' => 'Erreur d\'Autentication',
+                'message' => 'Erreur d\'authentification',
                 'status' => 406,
                 'args' => []
             ], 406);
@@ -50,11 +50,11 @@ class RideController extends Controller
         $city = $request->input('city');
         $type = RideType::find($request->input('type'));
 
-        $vehicles = Vehicle::whereHas('rider', function($query) use ($city) {
-            $query->where('is_available', true)
-                    ->where('is_blocked', false)
-                    ->where('city', $city);
-        })->where('ride_type_id', $type->id)->get();
+        // $vehicles = Vehicle::whereHas('rider', function($query) use ($city) {
+        //     $query->where('is_available', true)
+        //             ->where('is_blocked', false)
+        //             ->where('city', $city);
+        // })->where('ride_type_id', $type->id)->get();
 
         $riders = Rider::whereHas('vehicle', function($query) use ($type) {
                             $query->where('ride_type_id', $type->id);
@@ -74,7 +74,7 @@ class RideController extends Controller
         if(is_null($user)) {
             return response()->json([
                 'type' => 'error',
-                'message' => 'Erreur d\'Autentication',
+                'message' => 'Erreur d\'authentification',
                 'status' => 406,
                 'args' => []
             ], 406);
